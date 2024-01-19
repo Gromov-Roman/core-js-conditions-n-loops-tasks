@@ -508,7 +508,8 @@ function quickSort(arr, start = 0, end = arr.length - 1) {
   let cloneStart = start;
   let cloneEnd = end;
 
-  while (true) {
+  const condition = true;
+  while (condition) {
     if (cloneStart >= cloneEnd) return;
 
     if (cloneArr.slice(start, end + 1).length <= 10) {
