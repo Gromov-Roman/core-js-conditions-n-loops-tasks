@@ -508,14 +508,14 @@ function quickSort(arr, start = 0, end = arr.length - 1) {
   let cloneStart = start;
   let cloneEnd = end;
 
+  if (end - start <= 10) {
+    qsInsertionSort(cloneArr, cloneStart, cloneEnd);
+    return;
+  }
+
   const condition = true;
   while (condition) {
     if (cloneStart >= cloneEnd) return;
-
-    if (end - start <= 10) {
-      qsInsertionSort(cloneArr, cloneStart, cloneEnd);
-      return;
-    }
 
     const rightStart = qsPartition(cloneArr, cloneStart, cloneEnd);
 
