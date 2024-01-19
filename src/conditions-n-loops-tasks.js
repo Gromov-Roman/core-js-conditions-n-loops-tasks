@@ -447,24 +447,89 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(arr) {
-  const result = arr;
 
-  for (let index = 0; index < result.length; index += 1) {
-    let minIndex = index;
+const swap = (arr, from, to) => {
+  const cloneArray = arr;
+  const temp = cloneArray[from];
 
-    for (let i = index + 1; i < arr.length; i += 1) {
-      if (arr[i] < arr[minIndex]) {
-        minIndex = i;
-      }
-    }
+  cloneArray[from] = cloneArray[to];
+  cloneArray[to] = temp;
+};
 
-    if (minIndex !== index) {
-      const temp = arr[index];
-      result[index] = arr[minIndex];
-      result[minIndex] = temp;
+const qsInsertionSort = (arr, left, right) => {
+  const cloneArray = arr;
+
+  for (let i = left + 1; i < right + 1; i += 1) {
+    let sorted = i - 1;
+
+    while (sorted >= 0 && cloneArray[sorted] > cloneArray[sorted + 1]) {
+      swap(cloneArray, sorted, sorted + 1);
+      sorted -= 1;
     }
   }
+};
+
+const qsPartition = (arr, left, right) => {
+  const cloneArr = arr;
+  let cloneLeft = left;
+  let cloneRight = right;
+
+  const first = cloneLeft;
+  const middle = cloneLeft + Math.floor((cloneRight - cloneLeft) / 2);
+  const last = cloneRight;
+
+  if (cloneArr[first] > cloneArr[last]) swap(cloneArr, first, last);
+  if (cloneArr[middle] > cloneArr[first]) swap(cloneArr, first, middle);
+  else if (cloneArr[middle] > cloneArr[last]) swap(cloneArr, middle, last);
+
+  const pivot = cloneArr[middle];
+
+  while (cloneLeft <= cloneRight) {
+    while (cloneArr[cloneLeft] < pivot) {
+      cloneLeft += 1;
+    }
+    while (cloneArr[cloneRight] > pivot) {
+      cloneRight -= 1;
+    }
+
+    if (cloneLeft <= cloneRight) {
+      swap(cloneArr, cloneLeft, cloneRight);
+
+      cloneLeft += 1;
+      cloneRight -= 1;
+    }
+  }
+
+  return cloneLeft;
+};
+
+function quickSort(arr, start = 0, end = arr.length - 1) {
+  const cloneArr = arr;
+  let cloneStart = start;
+  let cloneEnd = end;
+
+  while (true) {
+    if (cloneStart >= cloneEnd) return;
+
+    if (cloneArr.slice(start, end + 1).length <= 10) {
+      qsInsertionSort(cloneArr, cloneStart, cloneEnd);
+      return;
+    }
+
+    const rightStart = qsPartition(cloneArr, cloneStart, cloneEnd);
+
+    if (rightStart - 1 - cloneStart < cloneEnd - rightStart) {
+      quickSort(cloneArr, cloneStart, rightStart - 1);
+      cloneStart = rightStart;
+    } else {
+      quickSort(cloneArr, rightStart, cloneEnd);
+      cloneEnd = rightStart - 1;
+    }
+  }
+}
+
+function sortByAsc(arr) {
+  quickSort(arr);
 }
 
 /**
