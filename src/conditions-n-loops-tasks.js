@@ -512,7 +512,7 @@ function quickSort(arr, start = 0, end = arr.length - 1) {
   while (condition) {
     if (cloneStart >= cloneEnd) return;
 
-    if (cloneArr.slice(start, end + 1).length <= 10) {
+    if (end - start <= 10) {
       qsInsertionSort(cloneArr, cloneStart, cloneEnd);
       return;
     }
